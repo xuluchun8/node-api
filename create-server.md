@@ -1,9 +1,9 @@
-## 做了什么 
+## - 做了什么 
 
 #### 1.引用express 
 #### 2.监听server
 #### 3.连接mongodb 
-#### 4.使用nodemon
+#### - 4.使用nodemon
 
 ###### 1.mac电脑要加 sudo
 ###### 2.指令为nodemon server.js
