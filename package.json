@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server" : "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuluchun8/node-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xuluchun8/node-api/issues"
+  },
+  "homepage": "https://github.com/xuluchun8/node-api#readme",
+  "dependencies": {
+    "mongoose": "^5.2.5"
+  }
+}
