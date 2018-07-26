@@ -21,7 +21,11 @@
 1.使用中间件bcrypt验证密码正确性. bcrypt.compare()
 2.使用jsonwebtoken,登录成功返回token 
    [jsonwebtoken api中文讲解][1]
-
-
+   [基于token的身份验证][2]
+3.使用passport，passport-jwt验证token
+   [JWT上手：Express + Passport][3]
+   
 
 [1]: https://segmentfault.com/a/1190000009494020
+[2]: http://blog.51cto.com/icooke/2063282
+[3]: https://www.jianshu.com/p/dc9a3302b92a

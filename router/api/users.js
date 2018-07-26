@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const gravatar = require('gravatar')
 const jwt = require('jsonwebtoken')
+const password = require('passport')
 // 引入数据User
 const User = require('../../model/Users')
 const keys = require('../../config/keys')
@@ -42,8 +43,8 @@ router.post('/register', (req, res) => {
     })
 })
 
-// GET api/users/login 
-// 登录成功则返回token
+// POST api/users/login 
+// 登录成功则返回token，然后一般会将其保存在浏览器
 router.post('/login', (req, res) => {
   const password = req.body.password
   const email = req.body.email
@@ -58,13 +59,19 @@ router.post('/login', (req, res) => {
             if (!isMath) {
               res.json({password: '密码不正确'})
             }else {
-              // 获取token，options为用户邮箱，自己设定的密匙，有效期限
-              const token = jwt.sign({name: user.email}, keys.privateSecret, { expiresIn: '1h' })
-              res.json({'token' : token})
+              // 获取token，options第一个为自己设定的‘规则’，自己设定的密匙，有效期限
+              const token = jwt.sign({id: user.id}, keys.privateSecret, { expiresIn: '1h' })
+              res.json({'token' : 'Bearer ' + token})
             }
           })
       }
     })
 })
 
+// 将获取的token发送到服务器验证，验证成功则返回get的数据
+// GET api/users/current
+// 调用 password.authenticate('jwt',{session : false})验证token
+router.get('/current',password.authenticate('jwt',{session : false}),(req,res) => {
+  res.json({msg : 'success'})
+}) 
 module.exports = router
