@@ -17,5 +17,11 @@
 3.使用中间件bcrypt加密。
 4.使用全球公认的邮箱头像gravatar
 
-##  三.login接口
-1.使用中间件bcrypt验证密码正确性
+##  四.login接口
+1.使用中间件bcrypt验证密码正确性. bcrypt.compare()
+2.使用jsonwebtoken,登录成功返回token 
+   [jsonwebtoken api中文讲解][1]
+
+
+
+[1]: https://segmentfault.com/a/1190000009494020

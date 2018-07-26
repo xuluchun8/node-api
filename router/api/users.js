@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const gravatar = require('gravatar')
+const jwt = require('jsonwebtoken')
 // 引入数据User
 const User = require('../../model/Users')
-
+const keys = require('../../config/keys')
 // POST  api/users/register
 router.post('/register', (req, res) => {
   // 查询数据库
@@ -21,14 +22,13 @@ router.post('/register', (req, res) => {
           name: req.body.name,
           email: req.body.email,
           password: req.body.password,
-        avatar
-      })
+        avatar})
         // 使用bcrypt加密password
         bcrypt.genSalt(10, function (err, salt) {
           bcrypt.hash(req.body.password, salt, function (err, hash) {
             if (err) throw err
             newUser.password = hash
-
+            // 将请求的数据保存到数据库
             newUser.save(user)
               .then((user) => {
                 res.json(user)
@@ -38,10 +38,6 @@ router.post('/register', (req, res) => {
               })
           })
         })
-        // 将请求的数据保存到数据库
-
-        // 保存该条document
-
       }
     })
 })
@@ -62,7 +58,9 @@ router.post('/login', (req, res) => {
             if (!isMath) {
               res.json({password: '密码不正确'})
             }else {
-              res.json('登录成功')
+              // 获取token，options为用户邮箱，自己设定的密匙，有效期限
+              const token = jwt.sign({name: user.email}, keys.privateSecret, { expiresIn: '1h' })
+              res.json({'token' : token})
             }
           })
       }

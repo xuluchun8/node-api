@@ -1,4 +1,5 @@
 
 module.exports = {
-  mongoURL : 'mongodb://localhost:32770'
+  mongoURL : 'mongodb://localhost:32770',
+  privateSecret : 'privateSecret'
 }
