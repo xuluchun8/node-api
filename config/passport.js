@@ -16,6 +16,7 @@ module.exports = function (passport) {
     User.findById(jwt_payload.id)
       .then(user => {
         if (user) {
+          // 将user返回给req,可以使用req.user
           return done(null, user)
         }
         return done(null, false)
