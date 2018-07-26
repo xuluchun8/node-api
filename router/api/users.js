@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const gravatar = require('gravatar')
 // 引入数据User
 const User = require('../../model/Users')
 // GET api/users/login
@@ -17,11 +18,14 @@ router.post('/register', (req, res) => {
       if (user) {
         return res.status(400).json({email: '该邮箱已被注册'})
       }else {
+        // 使用全球公认的头像
+        const avatar = gravatar.url(req.body.email, {s: '200', r: 'pg', d: 'mm'});
         // 如果邮箱没有被注册，则新建一条document
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
+          avatar
         })
         // 使用bcrypt加密password
         bcrypt.genSalt(10, function (err, salt) {
