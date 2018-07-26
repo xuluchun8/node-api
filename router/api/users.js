@@ -72,6 +72,10 @@ router.post('/login', (req, res) => {
 // GET api/users/current
 // 调用 password.authenticate('jwt',{session : false})验证token
 router.get('/current',password.authenticate('jwt',{session : false}),(req,res) => {
-  res.json({msg : 'success'})
+  res.json({
+    id : req.user.id,
+    name : req.user.name,
+    email : req.user.email
+  })
 }) 
 module.exports = router
