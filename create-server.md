@@ -14,5 +14,8 @@
 ##  三.register接口
 1.该接口为post请求，需要使用body-parser
 2.如果数据库中有该email,则不能重复注册，没有则可以正常注册。
-3.使用中间件bcrypt。
+3.使用中间件bcrypt加密。
 4.使用全球公认的邮箱头像gravatar
+
+##  三.login接口
+1.使用中间件bcrypt验证密码正确性

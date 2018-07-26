@@ -30,6 +30,7 @@ mongoose.connect(keys.mongoURL)
   })
 
 // 监听端口
+// process.env.PORT 设置PORT的环境变量
 const port = process.env.PORT || 3001
 app.listen(port, function () {
   console.log('server is connect')
