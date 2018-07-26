@@ -1,6 +1,4 @@
 ##  一.create-server 
-
-##  一.create-server 
 1.引用express 
 2.监听server
 3.连接mongodb 
@@ -17,3 +15,4 @@
 1.该接口为post请求，需要使用body-parser
 2.如果数据库中有该email,则不能重复注册，没有则可以正常注册。
 3.使用中间件bcrypt。
+4.使用全球公认的邮箱头像gravatar
