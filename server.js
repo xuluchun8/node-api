@@ -1,11 +1,19 @@
 // 引入模块
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const app = express()
 
 // 引入文件
 const keys = require('./config/keys')
 const users = require('./router/api/users')
+
+// 使用中间件
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+// app.use(bodyParser.json())
+
 
 // 测试根目录
 app.get('/', (req, res) => {
