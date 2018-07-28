@@ -14,9 +14,9 @@ const keys = require('../../config/keys')
 // post 
 router.post('/', password.authenticate('jwt', {session: false}), (req, res) => {
   const {errors, isValid} = validateProfile(req.body)
-  // console.log(errors,isvalid);
-  
-  if(!isValid){
+  // console.log(errors,isvalid)
+
+  if (!isValid) {
     return res.status(404).json(errors)
   }
   const profilesFields = {}
@@ -69,15 +69,15 @@ router.get('/', password.authenticate('jwt', {session: false}), (req, res) => {
 
   Profile.findOne({user: req.user.id})
     // 返回关联的user数据
-    .populate('user',['name','avatar','email'])
+    .populate('user', ['name', 'avatar', 'email'])
     .then(profile => {
-    // 考虑到没有该数据的时候
-    if (!profile) {
-      errors.noprofile = '该用户的信息不存在'
-      return res.status(404).json(errors)
-    }
-    res.json(profile)
-  })
+      // 考虑到没有该数据的时候
+      if (!profile) {
+        errors.noprofile = '该用户的信息不存在'
+        return res.status(404).json(errors)
+      }
+      res.json(profile)
+    })
     // 没有找到报错
     .catch(err => {
       res.status(404).json(err)})
@@ -85,13 +85,13 @@ router.get('/', password.authenticate('jwt', {session: false}), (req, res) => {
 
 // get api/profile/handle/:handle  
 // 该处不需要token,因为不需要使用req.user.id  public信息
-router.get('/handle/:handle',(req,res) => {
+router.get('/handle/:handle', (req, res) => {
   const errors = {}
-  Profile.findOne({handle :req.params.handle})
-    .populate('user',['name'])
+  Profile.findOne({handle: req.params.handle})
+    .populate('user', ['name'])
     .then(profile => {
-      if(!profile){
-        errors.name = "there is no the profile"
+      if (!profile) {
+        errors.name = 'there is no the profile'
         return res.status(404).json(errors)
       }
       res.json(profile)
@@ -103,13 +103,13 @@ router.get('/handle/:handle',(req,res) => {
 
 // get api/profile/user/:user_id  
 // 该处不需要token,因为不需要使用req.user.id  public信息
-router.get('/user/:user_id',(req,res) => {
+router.get('/user/:user_id', (req, res) => {
   const errors = {}
-  Profile.findOne({user :req.params.user_id})
-    .populate('user',['name'])
+  Profile.findOne({user: req.params.user_id})
+    .populate('user', ['name'])
     .then(profile => {
-      if(!profile){
-        errors.name = "there is no the profile"
+      if (!profile) {
+        errors.name = 'there is no the profile'
         return res.status(404).json(errors)
       }
       res.json(profile)
@@ -121,14 +121,14 @@ router.get('/user/:user_id',(req,res) => {
 
 // get api/profile/handle/:handle  
 // 该处不需要token,因为不需要使用req.user.id  public信息
-router.get('/all',(req,res) => {
+router.get('/all', (req, res) => {
   const errors = {}
-  //取得所有的信息
+  // 取得所有的信息
   Profile.find()
-    .populate('user',['name'])
+    .populate('user', ['name'])
     .then(profile => {
-      if(!profile){
-        errors.name = "there is no the profile"
+      if (!profile) {
+        errors.name = 'there is no the profile'
         return res.status(404).json(errors)
       }
       res.json(profile)
@@ -140,19 +140,19 @@ router.get('/all',(req,res) => {
 
 // post api/profile/experience
 router.post('/experience', password.authenticate('jwt', {session: false}), (req, res) => {
-  const {errors, isValid} = validateProfileExperience(req.body)  
-  if(!isValid){
+  const {errors, isValid} = validateProfileExperience(req.body)
+  if (!isValid) {
     return res.status(404).json(errors)
   }
-  Profile.findOne({user : req.user.id})
+  Profile.findOne({user: req.user.id})
     .then(profile => {
       const newExperience = {
-        title : req.body.title,
-        company : req.body.company,
-        location : req.body.location,
-        from : req.body.from,
-        description : req.body.description,
-        to : req.body.to,
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        description: req.body.description,
+        to: req.body.to
       }
       // 这里有bug 会不断push多条experience信息
       profile.experience.push(newExperience)
@@ -167,21 +167,22 @@ router.post('/experience', password.authenticate('jwt', {session: false}), (req,
 })
 
 // post api/profile/education
+// private
 router.post('/education', password.authenticate('jwt', {session: false}), (req, res) => {
-  const {errors, isValid} = validateProfileEducation(req.body)  
-  if(!isValid){
+  const {errors, isValid} = validateProfileEducation(req.body)
+  if (!isValid) {
     return res.status(404).json(errors)
   }
-  Profile.findOne({user : req.user.id})
+  Profile.findOne({user: req.user.id})
     .then(profile => {
       const newEducation = {
-        school : req.body.school,
-        degree : req.body.degree,
-        location : req.body.location,
-        from : req.body.from,
-        description : req.body.description,
-        to : req.body.to,
-        location : req.body.location,
+        school: req.body.school,
+        degree: req.body.degree,
+        location: req.body.location,
+        from: req.body.from,
+        description: req.body.description,
+        to: req.body.to,
+        location: req.body.location
       }
       // 这里有bug 会不断push多条experience信息
       profile.education.push(newEducation)
@@ -193,5 +194,40 @@ router.post('/education', password.authenticate('jwt', {session: false}), (req, 
     .catch(err => {
       res.json(err)
     })
+})
+
+// delete api/profile/education/:exp_id
+router.delete('/experience/:exp_id', password.authenticate('jwt', {session: false}), (req, res) => {
+
+  Profile.findOne({user: req.user.id})
+    .then(profile => {
+      const removeIndex = profile.experience.map(item => {
+        // 不能使用item._id,这样获取的是一个Objectid
+        return item.id})
+        .indexOf(req.params.exp_id)
+
+        if(removeIndex !== -1){
+          profile.experience.splice(removeIndex, 1)
+        }
+        profile.save().then(profile => res.json(profile))
+    })
+    .catch(err => res.status(404).json(err))
+})
+
+router.delete('/education/:exp_id', password.authenticate('jwt', {session: false}), (req, res) => {
+
+  Profile.findOne({user: req.user.id})
+    .then(profile => {
+      const removeIndex = profile.education.map(item => {
+        // 不能使用item._id,这样获取的是一个Objectid
+        return item.id})
+        .indexOf(req.params.exp_id)
+        
+        if(removeIndex !== -1){
+          profile.education.splice(removeIndex, 1)
+        }
+        profile.save().then(profile => res.json(profile))
+    })
+    .catch(err => res.status(404).json(err))
 })
 module.exports = router
