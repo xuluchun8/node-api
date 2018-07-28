@@ -4,7 +4,8 @@ const password = require('passport')
 // 引入验证函数
 const isEmpty = require('../../validation/isEmpty')
 const validateProfile = require('../../validation/profile')
-
+const validateProfileExperience = require('../../validation/experience')
+const validateProfileEducation = require('../../validation/education')
 // 引入数据User
 const User = require('../../model/Users')
 const Profile = require('../../model/Profiles')
@@ -12,10 +13,10 @@ const keys = require('../../config/keys')
 
 // post 
 router.post('/', password.authenticate('jwt', {session: false}), (req, res) => {
-  const {errors, isvalid} = validateProfile(req.body)
+  const {errors, isValid} = validateProfile(req.body)
   // console.log(errors,isvalid);
   
-  if(isvalid){
+  if(!isValid){
     return res.status(404).json(errors)
   }
   const profilesFields = {}
@@ -131,6 +132,63 @@ router.get('/all',(req,res) => {
         return res.status(404).json(errors)
       }
       res.json(profile)
+    })
+    .catch(err => {
+      res.json(err)
+    })
+})
+
+// post api/profile/experience
+router.post('/experience', password.authenticate('jwt', {session: false}), (req, res) => {
+  const {errors, isValid} = validateProfileExperience(req.body)  
+  if(!isValid){
+    return res.status(404).json(errors)
+  }
+  Profile.findOne({user : req.user.id})
+    .then(profile => {
+      const newExperience = {
+        title : req.body.title,
+        company : req.body.company,
+        location : req.body.location,
+        from : req.body.from,
+        description : req.body.description,
+        to : req.body.to,
+      }
+      // 这里有bug 会不断push多条experience信息
+      profile.experience.push(newExperience)
+
+      profile.save().then(data => {
+        res.json(data)
+      })
+    })
+    .catch(err => {
+      res.json(err)
+    })
+})
+
+// post api/profile/education
+router.post('/education', password.authenticate('jwt', {session: false}), (req, res) => {
+  const {errors, isValid} = validateProfileEducation(req.body)  
+  if(!isValid){
+    return res.status(404).json(errors)
+  }
+  Profile.findOne({user : req.user.id})
+    .then(profile => {
+      const newEducation = {
+        school : req.body.school,
+        degree : req.body.degree,
+        location : req.body.location,
+        from : req.body.from,
+        description : req.body.description,
+        to : req.body.to,
+        location : req.body.location,
+      }
+      // 这里有bug 会不断push多条experience信息
+      profile.education.push(newEducation)
+
+      profile.save().then(data => {
+        res.json(data)
+      })
     })
     .catch(err => {
       res.json(err)

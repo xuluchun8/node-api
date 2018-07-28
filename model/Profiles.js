@@ -49,7 +49,7 @@ const ProfileSchema = new Schema({
         type: String
       },
       location: {
-        required: true,
+        // required: true,
         type: String
       },
       from: {
@@ -57,7 +57,7 @@ const ProfileSchema = new Schema({
         type: String
       },
       description: {
-        required: true,
+        // required: true,
         type: String
       },
       to: {
@@ -76,7 +76,7 @@ const ProfileSchema = new Schema({
         type: String
       },
       fieldofstudy: {
-        required: true,
+        // required: true,
         type: String
       },
       location: {
@@ -84,7 +84,7 @@ const ProfileSchema = new Schema({
         type: String
       },
       from: {
-        required: true,
+        // required: true,
         type: String
       },
       description: {
