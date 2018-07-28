@@ -9,6 +9,7 @@ const app = express()
 // 引入文件
 const keys = require('./config/keys')
 const users = require('./router/api/users')
+const profiles = require('./router/api/profiles')
 
 // 使用中间件
 // parse application/x-www-form-urlencoded
@@ -21,6 +22,7 @@ app.use(passport.initialize())
 
 // 路由（引用路由文件）
 app.use('/api/users',users)
+app.use('/api/profiles',profiles)
 
 // 测试根目录
 app.get('/', (req, res) => {

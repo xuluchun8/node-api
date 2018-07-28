@@ -24,7 +24,15 @@
    [基于token的身份验证][2]
 3.使用passport，passport-jwt验证token
    [JWT上手：Express + Passport][3]
-   
+ 
+##  五.mongoose api
+`User.findOne().populate('profile',[name])
+User.find()
+User.update()
+
+Profile.update({user: req.user.id}, 
+{$set: profilesFields}, callback)
+`
 
 [1]: https://segmentfault.com/a/1190000009494020
 [2]: http://blog.51cto.com/icooke/2063282
