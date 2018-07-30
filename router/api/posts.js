@@ -77,9 +77,30 @@ router.delete('/:id', password.authenticate('jwt', {session: false}), (req, res)
     })
 })
 
-// get api/profile/user/:user_id  
-// 该处不需要token,因为不需要使用req.user.id  public信息
-router.get('/user/:user_id', (req, res) => {
+// post api/posts/like/:id
+router.post('/like/:id',password.authenticate('jwt', {session: false}),(req,res) => {
+  Post.findById(req.params.id).then(post => {
+    if(post.likes.filter(like => like.user.toString() == req.user.id).length > 0){
+      return res.status(400).json({liked : "该user已点赞"})
+    }
+    post.likes.push({user : req.user.id})
+    post.save().then(post => {res.json(post)})
+  })
+  .catch(er => res.status(404).json({msg : "点赞出错"}))
+})
+
+// // delete api/posts/like/:id
+router.delete('/unlike/:id',password.authenticate('jwt', {session: false}),(req,res) => {
+  Post.findById(req.params.id).then(post => {
+    // 如果没有点过赞
+    if(post.likes.filter(like => like.user.toString() == req.user.id).length = 0){
+      return res.status(404).json('该user未点赞过')
+    }
+    const removeIndex = post.likes.indexOf(req.user.id)
+    post.likes.splice(removeIndex,1)
+    post.save().then(post => {res.json('unlike sucess')})
+  })
+  .catch(er => res.status(404).json({msg : "点赞出错"}))
 })
 
 module.exports = router
