@@ -80,6 +80,8 @@ router.delete('/:id', password.authenticate('jwt', {session: false}), (req, res)
 // post api/posts/like/:id
 router.post('/like/:id',password.authenticate('jwt', {session: false}),(req,res) => {
   Post.findById(req.params.id).then(post => {
+    console.log(post);
+    
     if(post.likes.filter(like => like.user.toString() == req.user.id).length > 0){
       return res.status(400).json({liked : "该user已点赞"})
     }
