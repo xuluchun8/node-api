@@ -13,9 +13,6 @@ module.exports = function validatePost (data) {
   if (validator.isEmpty(data.likes)) {
     errors.likes = '名字不能为空'
   }
-  if (validator.isEmpty(data.date)) {
-    errors.date = 'date不能为空'
-  }
   if (validator.isEmpty(data.comments)) {
     errors.comments = 'comments不能为空'
   }
